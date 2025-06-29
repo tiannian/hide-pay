@@ -183,7 +183,7 @@ func main() {
 				Blinding: circuits.BigIntToFr(blinding7),
 			},
 		},
-		EphemeralReceiverSecretKey: []big.Int{
+		EphemeralViewSecretKey: []big.Int{
 			EphemeralReceiverSecretKey1,
 			EphemeralReceiverSecretKey2,
 			EphemeralReceiverSecretKey3,
@@ -195,8 +195,8 @@ func main() {
 			EphemeralAuditSecretKey3,
 			EphemeralAuditSecretKey4,
 		},
-		ReceiverPublicKey: receiverPublicKey.PointAffine,
-		AuditPublicKey:    auditPublicKey.PointAffine,
+		ViewPublicKey:  receiverPublicKey.PointAffine,
+		AuditPublicKey: auditPublicKey.PointAffine,
 	}
 
 	result, err := utxo.BuildAndCheck()

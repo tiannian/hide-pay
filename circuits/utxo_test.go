@@ -77,7 +77,7 @@ func TestUTXO_ToGadget(t *testing.T) {
 				Blinding: fr.NewElement(6),
 			},
 		},
-		EphemeralReceiverSecretKey: []big.Int{
+		EphemeralViewSecretKey: []big.Int{
 			*big.NewInt(1),
 			*big.NewInt(2),
 		},
@@ -85,8 +85,8 @@ func TestUTXO_ToGadget(t *testing.T) {
 			*big.NewInt(3),
 			*big.NewInt(4),
 		},
-		ReceiverPublicKey: receiverPublicKey,
-		AuditPublicKey:    auditPublicKey,
+		ViewPublicKey:  receiverPublicKey,
+		AuditPublicKey: auditPublicKey,
 	}
 
 	result, err := utxo.BuildAndCheck()

@@ -11,21 +11,19 @@ import (
 type UTXOGadget struct {
 	AllAsset []frontend.Variable `gnark:"allAsset"`
 
-	Nullifier []NullifierGadget `gnark:"nullifier"`
+	Nullifier        []NullifierGadget   `gnark:"nullifier"`
+	MerkleProofPath  []frontend.Variable `gnark:"merkleProofPath"`
+	MerkleProofIndex []frontend.Variable `gnark:"merkleProofIndex"`
 
 	Commitment []CommitmentGadget `gnark:"commitment"`
 
-	EphemeralReceiverSecretKey []frontend.Variable  `gnark:"ephemeralReceiverSecretKey"`
-	EphemeralAuditSecretKey    []frontend.Variable  `gnark:"ephemeralAuditSecretKey"`
-	ReceiverPublicKey          [2]frontend.Variable `gnark:"receiverPublicKey"`
-	AuditPublicKey             [2]frontend.Variable `gnark:"auditPublicKey"`
-
-	MerkleProofPath  []frontend.Variable `gnark:"merkleProofPath"`
-	MerkleProofIndex []frontend.Variable `gnark:"merkleProofIndex"`
+	EphemeralViewSecretKey  []frontend.Variable  `gnark:"ephemeralViewSecretKey"`
+	EphemeralAuditSecretKey []frontend.Variable  `gnark:"ephemeralAuditSecretKey"`
+	ViewPublicKey           [2]frontend.Variable `gnark:"viewPublicKey"`
+	AuditPublicKey          [2]frontend.Variable `gnark:"auditPublicKey"`
 }
 
 func NewUTXOGadget(allAssetSize int, depth int, nullifierSize int, commitmentSize int) *UTXOGadget {
-
 	return &UTXOGadget{
 		AllAsset: make([]frontend.Variable, allAssetSize),
 
@@ -33,9 +31,9 @@ func NewUTXOGadget(allAssetSize int, depth int, nullifierSize int, commitmentSiz
 		MerkleProofPath:  make([]frontend.Variable, nullifierSize*depth),
 		MerkleProofIndex: make([]frontend.Variable, nullifierSize),
 
-		Commitment:                 make([]CommitmentGadget, commitmentSize),
-		EphemeralReceiverSecretKey: make([]frontend.Variable, commitmentSize),
-		EphemeralAuditSecretKey:    make([]frontend.Variable, commitmentSize),
+		Commitment:              make([]CommitmentGadget, commitmentSize),
+		EphemeralViewSecretKey:  make([]frontend.Variable, commitmentSize),
+		EphemeralAuditSecretKey: make([]frontend.Variable, commitmentSize),
 	}
 }
 
@@ -44,7 +42,7 @@ func (gadget *UTXOGadget) BuildAndCheck(api frontend.API) (*UTXOResultGadget, er
 	commitments := make([]frontend.Variable, len(gadget.Commitment))
 
 	// Check that the number of nullifiers, commitments, and ephemeral secret keys are the same
-	if len(gadget.Commitment) != len(gadget.EphemeralReceiverSecretKey) || len(gadget.Commitment) != len(gadget.EphemeralAuditSecretKey) {
+	if len(gadget.Commitment) != len(gadget.EphemeralViewSecretKey) || len(gadget.Commitment) != len(gadget.EphemeralAuditSecretKey) {
 		return nil, fmt.Errorf("number of nullifiers, commitments, and ephemeral receiver and audit secret keys must be the same")
 	}
 
@@ -94,7 +92,7 @@ func (gadget *UTXOGadget) BuildAndCheck(api frontend.API) (*UTXOResultGadget, er
 		api.AssertIsEqual(merkleRoot[i], merkleRoot[0])
 	}
 
-	ownerMemoHashes := make([]frontend.Variable, len(gadget.EphemeralReceiverSecretKey))
+	ownerMemoHashes := make([]frontend.Variable, len(gadget.EphemeralViewSecretKey))
 	auditMemoHashes := make([]frontend.Variable, len(gadget.EphemeralAuditSecretKey))
 
 	outputAmounts := make([]frontend.Variable, len(gadget.AllAsset))
@@ -122,8 +120,8 @@ func (gadget *UTXOGadget) BuildAndCheck(api frontend.API) (*UTXOResultGadget, er
 		commitments[i] = commitment
 
 		ownerMemoGadget := MemoGadget{
-			EphemeralSecretKey: gadget.EphemeralReceiverSecretKey[i],
-			ReceiverPublicKey:  gadget.ReceiverPublicKey,
+			EphemeralSecretKey: gadget.EphemeralViewSecretKey[i],
+			ReceiverPublicKey:  gadget.ViewPublicKey,
 		}
 
 		ownerMemoHash, err := ownerMemoGadget.Generate(api, gadgetCommitment)

@@ -15,12 +15,12 @@ type UTXO struct {
 	Nullifier   []circuits.Nullifier
 	MerkleProof []MerkleProof
 
-	Commitment                 []circuits.Commitment
-	EphemeralReceiverSecretKey []big.Int
-	EphemeralAuditSecretKey    []big.Int
+	Commitment              []circuits.Commitment
+	EphemeralViewSecretKey  []big.Int
+	EphemeralAuditSecretKey []big.Int
 
-	ReceiverPublicKey twistededwardbn254.PointAffine
-	AuditPublicKey    twistededwardbn254.PointAffine
+	ViewPublicKey  twistededwardbn254.PointAffine
+	AuditPublicKey twistededwardbn254.PointAffine
 }
 
 func (utxo *UTXO) ToGadget(allAsset []frontend.Variable) (*circuits.UTXOGadget, error) {
@@ -43,11 +43,11 @@ func (utxo *UTXO) ToGadget(allAsset []frontend.Variable) (*circuits.UTXOGadget, 
 		commitments[i] = *utxo.Commitment[i].ToGadget()
 	}
 
-	ephemeralReceiverSecretKeys := make([]frontend.Variable, len(utxo.EphemeralReceiverSecretKey))
+	ephemeralViewSecretKeys := make([]frontend.Variable, len(utxo.EphemeralViewSecretKey))
 	ephemeralAuditSecretKeys := make([]frontend.Variable, len(utxo.EphemeralAuditSecretKey))
 
-	for i := range utxo.EphemeralReceiverSecretKey {
-		ephemeralReceiverSecretKeys[i] = utxo.EphemeralReceiverSecretKey[i]
+	for i := range utxo.EphemeralViewSecretKey {
+		ephemeralViewSecretKeys[i] = utxo.EphemeralViewSecretKey[i]
 	}
 
 	for i := range utxo.EphemeralAuditSecretKey {
@@ -55,8 +55,8 @@ func (utxo *UTXO) ToGadget(allAsset []frontend.Variable) (*circuits.UTXOGadget, 
 	}
 
 	receiverPublicKey := [2]frontend.Variable{
-		utxo.ReceiverPublicKey.X,
-		utxo.ReceiverPublicKey.Y,
+		utxo.ViewPublicKey.X,
+		utxo.ViewPublicKey.Y,
 	}
 
 	auditPublicKey := [2]frontend.Variable{
@@ -65,15 +65,15 @@ func (utxo *UTXO) ToGadget(allAsset []frontend.Variable) (*circuits.UTXOGadget, 
 	}
 
 	return &circuits.UTXOGadget{
-		AllAsset:                   allAsset,
-		Nullifier:                  nullifiers,
-		Commitment:                 commitments,
-		EphemeralReceiverSecretKey: ephemeralReceiverSecretKeys,
-		EphemeralAuditSecretKey:    ephemeralAuditSecretKeys,
-		ReceiverPublicKey:          receiverPublicKey,
-		AuditPublicKey:             auditPublicKey,
-		MerkleProofPath:            merkleProofPath,
-		MerkleProofIndex:           merkleProofIndex,
+		AllAsset:                allAsset,
+		Nullifier:               nullifiers,
+		Commitment:              commitments,
+		EphemeralViewSecretKey:  ephemeralViewSecretKeys,
+		EphemeralAuditSecretKey: ephemeralAuditSecretKeys,
+		ViewPublicKey:           receiverPublicKey,
+		AuditPublicKey:          auditPublicKey,
+		MerkleProofPath:         merkleProofPath,
+		MerkleProofIndex:        merkleProofIndex,
 	}, nil
 }
 
@@ -138,8 +138,8 @@ func (utxo *UTXO) BuildAndCheck() (*UTXOResult, error) {
 		commitment := utxoCommitment.Compute()
 
 		ownerMemo := circuits.Memo{
-			SecretKey: utxo.EphemeralReceiverSecretKey[i],
-			PublicKey: utxo.ReceiverPublicKey,
+			SecretKey: utxo.EphemeralViewSecretKey[i],
+			PublicKey: utxo.ViewPublicKey,
 		}
 
 		ownerMemoEphemeralPublickKey, ownerMemoCiphertext, err := ownerMemo.Encrypt(utxoCommitment)
