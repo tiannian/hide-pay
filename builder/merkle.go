@@ -33,7 +33,7 @@ func (mt *MerkleTree) Build(elems []fr.Element) {
 		mt.latestLeafIndex = i
 	}
 
-	sizeLayer := (len(elems)/2 + 1)
+	sizeLayer := (len(elems) + 1) / 2
 	latestLayerBegin := 0
 
 	for i := 1; i < mt.depth; i++ {
@@ -55,7 +55,7 @@ func (mt *MerkleTree) Build(elems []fr.Element) {
 			mt.tree[thisLayerBegin+j] = sumElem
 		}
 
-		sizeLayer = sizeLayer / 2
+		sizeLayer = (sizeLayer + 1) / 2
 		latestLayerBegin = thisLayerBegin
 	}
 }
@@ -81,7 +81,7 @@ func (mt *MerkleTree) AppendSingle(elem fr.Element) {
 		}
 
 		thisLayerBegin = thisLayerBegin + int(math.Pow(2, float64(mt.depth-1-i)))
-		groupThisLayer = groupThisLayer / 2
+		groupThisLayer = (groupThisLayer + 1) / 2
 	}
 }
 
@@ -121,7 +121,7 @@ func (mt *MerkleTree) GetProof(index int) MerkleProof {
 		}
 
 		thisLayerBegin = thisLayerBegin + int(math.Pow(2, float64(mt.depth-1-i)))
-		groupThisLayer = groupThisLayer / 2
+		groupThisLayer = (groupThisLayer) / 2
 	}
 
 	return MerkleProof{
