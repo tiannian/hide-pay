@@ -114,11 +114,11 @@ func (mt *MerkleTree) GetProof(index int) MerkleProof {
 	for i := 0; i < len(flag)-1; i++ {
 		if flag[i] {
 			// fmt.Println("flag[i] is true, group index is", groupThisLayer, thisLayerBegin+groupThisLayer-1)
-			fmt.Println("index", thisLayerBegin+groupThisLayer-1)
+			// fmt.Println("index", thisLayerBegin+groupThisLayer-1)
 			proof[i+1] = mt.tree[thisLayerBegin+groupThisLayer-1]
 		} else {
 			// fmt.Println("flag[i] is false, group index is", groupThisLayer, thisLayerBegin+groupThisLayer+1)
-			fmt.Println("index", thisLayerBegin+groupThisLayer+1)
+			// fmt.Println("index", thisLayerBegin+groupThisLayer+1)
 			proof[i+1] = mt.tree[thisLayerBegin+groupThisLayer+1]
 		}
 

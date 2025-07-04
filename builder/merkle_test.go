@@ -23,15 +23,15 @@ func TestMerkleTreeBuild(t *testing.T) {
 
 	hasher := poseidon2.NewMerkleDamgardHasher()
 
-	mt := builder.NewMerkleTree(5, hasher)
+	mt := builder.NewMerkleTree(34, hasher)
 
 	mt.Build(elems)
-	mt.PrintTree()
+	// mt.PrintTree()
 
-	fmt.Println("get proof for index 5")
+	// fmt.Println("get proof for index 5")
 
 	proof := mt.GetProof(1)
-	proof.PrintProof()
+	// proof.PrintProof()
 
 	fmt.Println("proof root")
 	proofRoot := proof.Verify()
