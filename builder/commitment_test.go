@@ -32,19 +32,15 @@ func GenerateCommitment(seed int64) *builder.Commitment {
 	spentSecKey := new(big.Int).Rand(rnd, max)
 	spentAddress := utils.BuildAddress(*spentSecKey)
 
-	freezeSecKey := new(big.Int).Rand(rnd, max)
-	freezeAddress := utils.BuildAddress(*freezeSecKey)
-
 	return &builder.Commitment{
-		Asset:         fr.NewElement(asset),
-		Amount:        fr.NewElement(amount),
-		OwnerPubKey:   ownerPubKey,
-		SpentAddress:  spentAddress,
-		ViewPubKey:    viewPubKey,
-		AuditPubKey:   auditPubKey,
-		FreezeAddress: freezeAddress,
-		FreezeFlag:    fr.NewElement(0),
-		Blinding:      fr.NewElement(blinding),
+		Asset:        fr.NewElement(asset),
+		Amount:       fr.NewElement(amount),
+		OwnerPubKey:  ownerPubKey,
+		SpentAddress: spentAddress,
+		ViewPubKey:   viewPubKey,
+		AuditPubKey:  auditPubKey,
+		FreezeFlag:   fr.NewElement(0),
+		Blinding:     fr.NewElement(blinding),
 	}
 }
 

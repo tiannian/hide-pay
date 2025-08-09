@@ -54,8 +54,8 @@ func TestKeypair_Sign(t *testing.T) {
 
 func TestKeypair_Sign_MultipleMessages(t *testing.T) {
 	random1 := fr.NewElement(12345)
-	random2 := fr.NewElement(12345)
-	random3 := fr.NewElement(12345)
+	random2 := fr.NewElement(1234)
+	random3 := fr.NewElement(123)
 
 	kp, err := builder.GenerateKeypair()
 	require.NoError(t, err)
@@ -82,7 +82,7 @@ func TestKeypair_Sign_MultipleMessages(t *testing.T) {
 
 func TestKeypair_Sign_SameMessage(t *testing.T) {
 	random1 := fr.NewElement(12345)
-	random2 := fr.NewElement(12345)
+	random2 := fr.NewElement(1234)
 
 	kp, err := builder.GenerateKeypair()
 	require.NoError(t, err)

@@ -27,7 +27,7 @@ func NewMerkleTree(depth int, hasher hash.Hash) *MerkleTree {
 }
 
 func (mt *MerkleTree) Build(elems []fr.Element) {
-	for i := 0; i < len(elems); i++ {
+	for i := range elems {
 		mt.tree[i] = elems[i]
 		mt.latestLeafIndex = i
 	}

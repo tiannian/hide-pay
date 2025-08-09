@@ -1,7 +1,6 @@
 package builder_test
 
 import (
-	"fmt"
 	"hide-pay/builder"
 	"testing"
 
@@ -26,16 +25,10 @@ func TestMerkleTreeBuild(t *testing.T) {
 		mt.AppendSingle(elem)
 	}
 
-	mt.PrintTree()
-
 	proof := mt.GetProof(2)
-	proof.PrintProof()
 
-	fmt.Println("proof root")
 	proofRoot := proof.Verify()
-	fmt.Println(proofRoot.Text(10))
 
 	merkleRoot := mt.GetRoot()
-	fmt.Println(merkleRoot.Text(10))
 	assert.Equal(t, proofRoot, merkleRoot)
 }

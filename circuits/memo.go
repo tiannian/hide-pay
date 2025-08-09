@@ -38,7 +38,6 @@ func (gadget *MemoGadget) Generate(api frontend.API, output CommitmentGadget) (f
 		output.ViewPubKey[1],
 		output.AuditPubKey[0],
 		output.AuditPubKey[1],
-		output.FreezeAddress,
 		output.FreezeFlag,
 		output.Blinding,
 	}

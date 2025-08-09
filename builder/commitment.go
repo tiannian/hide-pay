@@ -11,28 +11,26 @@ import (
 )
 
 type Commitment struct {
-	Asset         fr.Element
-	Amount        fr.Element
-	OwnerPubKey   twistededwardbn254.PointAffine
-	SpentAddress  fr.Element
-	ViewPubKey    twistededwardbn254.PointAffine
-	AuditPubKey   twistededwardbn254.PointAffine
-	FreezeAddress fr.Element
-	FreezeFlag    fr.Element
-	Blinding      fr.Element
+	Asset        fr.Element
+	Amount       fr.Element
+	OwnerPubKey  twistededwardbn254.PointAffine
+	SpentAddress fr.Element
+	ViewPubKey   twistededwardbn254.PointAffine
+	AuditPubKey  twistededwardbn254.PointAffine
+	FreezeFlag   fr.Element
+	Blinding     fr.Element
 }
 
 func (commitment *Commitment) ToGadget() *circuits.CommitmentGadget {
 	return &circuits.CommitmentGadget{
-		Asset:         commitment.Asset,
-		Amount:        commitment.Amount,
-		OwnerPubKey:   [2]frontend.Variable{commitment.OwnerPubKey.X, commitment.OwnerPubKey.Y},
-		SpentAddress:  commitment.SpentAddress,
-		ViewPubKey:    [2]frontend.Variable{commitment.ViewPubKey.X, commitment.ViewPubKey.Y},
-		AuditPubKey:   [2]frontend.Variable{commitment.AuditPubKey.X, commitment.AuditPubKey.Y},
-		FreezeAddress: commitment.FreezeAddress,
-		FreezeFlag:    commitment.FreezeFlag,
-		Blinding:      commitment.Blinding,
+		Asset:        commitment.Asset,
+		Amount:       commitment.Amount,
+		OwnerPubKey:  [2]frontend.Variable{commitment.OwnerPubKey.X, commitment.OwnerPubKey.Y},
+		SpentAddress: commitment.SpentAddress,
+		ViewPubKey:   [2]frontend.Variable{commitment.ViewPubKey.X, commitment.ViewPubKey.Y},
+		AuditPubKey:  [2]frontend.Variable{commitment.AuditPubKey.X, commitment.AuditPubKey.Y},
+		FreezeFlag:   commitment.FreezeFlag,
+		Blinding:     commitment.Blinding,
 	}
 }
 
@@ -48,9 +46,8 @@ func (commitment *Commitment) String() string {
 	spentAddress := fmt.Sprintf("SpentAddress: %s", commitment.SpentAddress.Text(10))
 	viewPubKey := fmt.Sprintf("ViewPubKey: %s", formatPoint(commitment.ViewPubKey))
 	auditPubKey := fmt.Sprintf("AuditPubKey: %s", formatPoint(commitment.AuditPubKey))
-	freezeAddress := fmt.Sprintf("FreezeAddress: %s", commitment.FreezeAddress.Text(10))
 	freezeFlag := fmt.Sprintf("FreezeFlag: %s", commitment.FreezeFlag.Text(10))
-	return fmt.Sprintf("Commitment(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+	return fmt.Sprintf("Commitment(%s,%s,%s,%s,%s,%s,%s,%s)",
 		assetStr,
 		amountStr,
 		blindingStr,
@@ -58,7 +55,6 @@ func (commitment *Commitment) String() string {
 		spentAddress,
 		viewPubKey,
 		auditPubKey,
-		freezeAddress,
 		freezeFlag)
 }
 
@@ -74,7 +70,6 @@ func (commitment *Commitment) Compute() fr.Element {
 	viewPubKeyYBytes := commitment.ViewPubKey.Y.Bytes()
 	auditPubKeyXBytes := commitment.AuditPubKey.X.Bytes()
 	auditPubKeyYBytes := commitment.AuditPubKey.Y.Bytes()
-	freezeAddressBytes := commitment.FreezeAddress.Bytes()
 	freezeFlagBytes := commitment.FreezeFlag.Bytes()
 	blindingBytes := commitment.Blinding.Bytes()
 
@@ -87,7 +82,6 @@ func (commitment *Commitment) Compute() fr.Element {
 	hasher.Write(viewPubKeyYBytes[:])
 	hasher.Write(auditPubKeyXBytes[:])
 	hasher.Write(auditPubKeyYBytes[:])
-	hasher.Write(freezeAddressBytes[:])
 	hasher.Write(freezeFlagBytes[:])
 
 	resBytes := hasher.Sum(blindingBytes[:])

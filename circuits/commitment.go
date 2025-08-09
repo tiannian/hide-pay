@@ -8,15 +8,14 @@ import (
 )
 
 type CommitmentGadget struct {
-	Asset         frontend.Variable    `gnark:"asset"`
-	Amount        frontend.Variable    `gnark:"amount"`
-	OwnerPubKey   [2]frontend.Variable `gnark:"ownerPubKey"`
-	SpentAddress  frontend.Variable    `gnark:"spentAddress"`
-	ViewPubKey    [2]frontend.Variable `gnark:"viewPubKey"`
-	AuditPubKey   [2]frontend.Variable `gnark:"auditPubKey"`
-	FreezeAddress frontend.Variable    `gnark:"freezeAddress"`
-	FreezeFlag    frontend.Variable    `gnark:"freezeFlag"`
-	Blinding      frontend.Variable    `gnark:"blinding"`
+	Asset        frontend.Variable    `gnark:"asset"`
+	Amount       frontend.Variable    `gnark:"amount"`
+	OwnerPubKey  [2]frontend.Variable `gnark:"ownerPubKey"`
+	SpentAddress frontend.Variable    `gnark:"spentAddress"`
+	ViewPubKey   [2]frontend.Variable `gnark:"viewPubKey"`
+	AuditPubKey  [2]frontend.Variable `gnark:"auditPubKey"`
+	FreezeFlag   frontend.Variable    `gnark:"freezeFlag"`
+	Blinding     frontend.Variable    `gnark:"blinding"`
 }
 
 func (gadget *CommitmentGadget) Compute(api frontend.API) (frontend.Variable, error) {
@@ -34,7 +33,6 @@ func (gadget *CommitmentGadget) Compute(api frontend.API) (frontend.Variable, er
 	hasher.Write(gadget.ViewPubKey[1])
 	hasher.Write(gadget.AuditPubKey[0])
 	hasher.Write(gadget.AuditPubKey[1])
-	hasher.Write(gadget.FreezeAddress)
 	hasher.Write(gadget.FreezeFlag)
 	hasher.Write(gadget.Blinding)
 

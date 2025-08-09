@@ -36,15 +36,14 @@ func (circuit *CommitmentCircuit) Define(api frontend.API) error {
 func TestCommitment_Circuit_Verification(t *testing.T) {
 	// Test commitment circuit verification
 	commitment := &builder.Commitment{
-		Asset:         fr.NewElement(12345),
-		Amount:        fr.NewElement(67890),
-		OwnerPubKey:   twistededwardbn254.PointAffine{X: fr.NewElement(1), Y: fr.NewElement(2)},
-		SpentAddress:  fr.NewElement(3),
-		ViewPubKey:    twistededwardbn254.PointAffine{X: fr.NewElement(4), Y: fr.NewElement(5)},
-		AuditPubKey:   twistededwardbn254.PointAffine{X: fr.NewElement(6), Y: fr.NewElement(7)},
-		FreezeAddress: fr.NewElement(8),
-		FreezeFlag:    fr.NewElement(9),
-		Blinding:      fr.NewElement(10),
+		Asset:        fr.NewElement(12345),
+		Amount:       fr.NewElement(67890),
+		OwnerPubKey:  twistededwardbn254.PointAffine{X: fr.NewElement(1), Y: fr.NewElement(2)},
+		SpentAddress: fr.NewElement(3),
+		ViewPubKey:   twistededwardbn254.PointAffine{X: fr.NewElement(4), Y: fr.NewElement(5)},
+		AuditPubKey:  twistededwardbn254.PointAffine{X: fr.NewElement(6), Y: fr.NewElement(7)},
+		FreezeFlag:   fr.NewElement(9),
+		Blinding:     fr.NewElement(10),
 	}
 
 	circuit := NewCommitmentCircuit()
@@ -66,15 +65,14 @@ func TestCommitment_Circuit_Verification(t *testing.T) {
 func TestCommitment_Circuit_InvalidWitness(t *testing.T) {
 	// Test circuit verification with invalid witness
 	commitment := &builder.Commitment{
-		Asset:         fr.NewElement(12345),
-		Amount:        fr.NewElement(67890),
-		OwnerPubKey:   twistededwardbn254.PointAffine{X: fr.NewElement(1), Y: fr.NewElement(2)},
-		SpentAddress:  fr.NewElement(3),
-		ViewPubKey:    twistededwardbn254.PointAffine{X: fr.NewElement(4), Y: fr.NewElement(5)},
-		AuditPubKey:   twistededwardbn254.PointAffine{X: fr.NewElement(6), Y: fr.NewElement(7)},
-		FreezeAddress: fr.NewElement(8),
-		FreezeFlag:    fr.NewElement(9),
-		Blinding:      fr.NewElement(10),
+		Asset:        fr.NewElement(12345),
+		Amount:       fr.NewElement(67890),
+		OwnerPubKey:  twistededwardbn254.PointAffine{X: fr.NewElement(1), Y: fr.NewElement(2)},
+		SpentAddress: fr.NewElement(3),
+		ViewPubKey:   twistededwardbn254.PointAffine{X: fr.NewElement(4), Y: fr.NewElement(5)},
+		AuditPubKey:  twistededwardbn254.PointAffine{X: fr.NewElement(6), Y: fr.NewElement(7)},
+		FreezeFlag:   fr.NewElement(9),
+		Blinding:     fr.NewElement(10),
 	}
 
 	circuit := NewCommitmentCircuit()
